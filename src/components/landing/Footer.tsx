@@ -1,203 +1,107 @@
-import { Github, Twitter, Mail } from "lucide-react";
 import { motion } from "framer-motion";
+import { Phone, Mail, Instagram } from "lucide-react";
 
-interface FooterLink {
-  label: string;
-  href: string;
-}
-
-interface FooterSection {
-  title: string;
-  links: FooterLink[];
-}
-
-interface FooterProps {
-  companyName?: string;
-  tagline?: string;
-  sections?: FooterSection[];
-  socialLinks?: {
-    twitter?: string;
-    telegram?: string;
-    github?: string;
-    email?: string;
-  };
-  copyrightText?: string;
-}
-
-const defaultSections: FooterSection[] = [
-  {
-    title: "Продукт",
-    links: [
-      { label: "Возможности", href: "#features" },
-      { label: "Интеграции", href: "#integrations" },
-      { label: "Тарифы", href: "#pricing" },
-      { label: "Документация API", href: "#api" },
-      { label: "Обновления", href: "#changelog" },
-    ],
-  },
-  {
-    title: "Компания",
-    links: [
-      { label: "О нас", href: "#about" },
-      { label: "Карьера", href: "#careers" },
-      { label: "Блог", href: "#blog" },
-      { label: "Пресс-кит", href: "#press" },
-      { label: "Контакты", href: "#contact" },
-    ],
-  },
-  {
-    title: "Ресурсы",
-    links: [
-      { label: "Документация", href: "#docs" },
-      { label: "Центр помощи", href: "#help" },
-      { label: "Сообщество", href: "#community" },
-      { label: "Кейсы", href: "#case-studies" },
-      { label: "Вебинары", href: "#webinars" },
-    ],
-  },
-  {
-    title: "Юридическое",
-    links: [
-      { label: "Политика конфиденциальности", href: "#privacy" },
-      { label: "Условия использования", href: "#terms" },
-      { label: "Безопасность", href: "#security" },
-      { label: "Соответствие", href: "#compliance" },
-      { label: "Политика cookies", href: "#cookies" },
-    ],
-  },
-];
-
-export const Footer = ({
-  companyName = "СинхроЛинк",
-  tagline = "Интеллектуальный слой для современных коммуникаций",
-  sections = defaultSections,
-  socialLinks = {
-    twitter: "https://twitter.com",
-    telegram: "https://t.me",
-    github: "https://github.com",
-    email: "hello@sinhrolink.ru",
-  },
-  copyrightText,
-}: FooterProps) => {
+export const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const copyright = copyrightText || `© ${currentYear} ${companyName}. Все права защищены.`;
+
+  const scrollTo = (href: string) => {
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <footer className="w-full bg-[#fafafa] border-t border-[#e5e5e5]">
-      <div className="max-w-[1200px] mx-auto px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-12">
+    <footer className="w-full bg-[#0f0f0f]">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 py-20">
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="col-span-2"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="md:col-span-5"
           >
-            <div className="mb-4">
-              <h3 className="text-2xl font-semibold text-[#202020] mb-2 font-medium">
-                {companyName}
-              </h3>
-              <p className="text-sm leading-5 text-[#666666] max-w-xs">
-                {tagline}
-              </p>
-            </div>
+            <h3 className="text-2xl font-bold text-white mb-3">ФотоМомент</h3>
+            <p className="text-white/50 text-sm leading-6 max-w-xs mb-8">
+              Аренда фотобудки и селфи-зеркала для незабываемых мероприятий в Краснодаре.
+            </p>
 
-            <div className="flex items-center gap-3 mt-6">
-              {socialLinks.twitter && (
-                <a
-                  href={socialLinks.twitter}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#202020] hover:border-[#202020] transition-colors duration-150"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-              )}
-              {socialLinks.telegram && (
-                <a
-                  href={socialLinks.telegram}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#202020] hover:border-[#202020] transition-colors duration-150"
-                  aria-label="Telegram"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                  </svg>
-                </a>
-              )}
-              {socialLinks.github && (
-                <a
-                  href={socialLinks.github}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#202020] hover:border-[#202020] transition-colors duration-150"
-                  aria-label="GitHub"
-                >
-                  <Github className="w-4 h-4" />
-                </a>
-              )}
-              {socialLinks.email && (
-                <a
-                  href={`mailto:${socialLinks.email}`}
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white border border-[#e5e5e5] text-[#666666] hover:text-[#202020] hover:border-[#202020] transition-colors duration-150"
-                  aria-label="Email"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              )}
+            <div className="flex flex-col gap-3">
+              <a href="tel:+79001234567" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-150 text-sm">
+                <Phone className="w-4 h-4 text-[#156d95]" />
+                +7 (900) 123-45-67
+              </a>
+              <a href="mailto:info@fotomoment.ru" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors duration-150 text-sm">
+                <Mail className="w-4 h-4 text-[#156d95]" />
+                info@fotomoment.ru
+              </a>
+              <span className="flex items-center gap-3 text-white/60 text-sm">
+                <Instagram className="w-4 h-4 text-[#156d95]" />
+                @fotomoment_krd
+              </span>
             </div>
           </motion.div>
 
-          {sections.map((section, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-              className="col-span-1"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="md:col-span-3"
+          >
+            <h4 className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-5">Навигация</h4>
+            <ul className="space-y-3">
+              {[
+                { label: "Оборудование", href: "#equipment" },
+                { label: "Как это работает", href: "#how" },
+                { label: "Акции и пакеты", href: "#promo" },
+                { label: "Вопросы и ответы", href: "#faq" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <button
+                    onClick={() => scrollTo(link.href)}
+                    className="text-sm text-white/50 hover:text-white transition-colors duration-150"
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="md:col-span-4"
+          >
+            <h4 className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-5">Забронировать</h4>
+            <p className="text-white/50 text-sm leading-6 mb-6">
+              Оставьте заявку и мы свяжемся в течение 15 минут. Работаем без выходных.
+            </p>
+            <button
+              onClick={() => scrollTo("#contact")}
+              className="bg-[#156d95] text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-[#1a85b5] hover:rounded-2xl transition-all duration-200"
             >
-              <h4 className="text-sm font-medium text-[#202020] mb-4 uppercase tracking-wide">
-                {section.title}
-              </h4>
-              <ul className="space-y-3">
-                {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-[#666666] hover:text-[#202020] transition-colors duration-150"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
+              Оставить заявку
+            </button>
+          </motion.div>
         </div>
 
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="pt-8 border-t border-[#e5e5e5]"
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4"
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-[#666666]">
-              {copyright}
-            </p>
-            <div className="flex items-center gap-6">
-              <a
-                href="#status"
-                className="text-sm text-[#666666] hover:text-[#202020] transition-colors duration-150"
-              >
-                Статус
-              </a>
-              <a
-                href="#sitemap"
-                className="text-sm text-[#666666] hover:text-[#202020] transition-colors duration-150"
-              >
-                Карта сайта
-              </a>
-            </div>
-          </div>
+          <p className="text-sm text-white/30">
+            © {currentYear} ФотоМомент. Краснодар. Все права защищены.
+          </p>
+          <a href="#privacy" className="text-sm text-white/30 hover:text-white/60 transition-colors duration-150">
+            Политика конфиденциальности
+          </a>
         </motion.div>
       </div>
     </footer>

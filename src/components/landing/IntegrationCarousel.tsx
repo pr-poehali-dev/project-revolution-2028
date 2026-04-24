@@ -1,186 +1,118 @@
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import Icon from "@/components/ui/icon";
 
-interface IntegrationApp {
-  name: string;
-  logo: string;
-}
-
-interface IntegrationCarouselProps {
-  buttonText?: string;
-  buttonHref?: string;
-  title?: string;
-  subtitle?: string;
-  topRowApps?: IntegrationApp[];
-  bottomRowApps?: IntegrationApp[];
-}
-
-const defaultTopRowApps: IntegrationApp[] = [
-  { name: "Integration 1", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-389-Hc8XBOUI8vkVmIwWQZs33kxMF353Xj.png" },
-  { name: "Integration 2", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-407-eyikTTM6ccO0f4I7ZmNk5LpFI4EKOG.png" },
-  { name: "Integration 3", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-379-5hDaxwIw4LzjwXzWuorEXi7ESrGYl1.png" },
-  { name: "Integration 4", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-374-bp0RaoVnQI1JMqR9fjessWI8v33kLV.png" },
-  { name: "Integration 5", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-381-eKw7vkCp2Wq9hivZJaN1ERJdjCqR0d.png" },
-  { name: "Integration 6", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-401-F6mjMLGEZt4HAohKA889Z8Gf5fMzIw.png" },
-  { name: "Integration 7", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-403-HnBAGFYWgxxMGrH2PI45UorQOsQHFo.png" },
-  { name: "Integration 1", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-389-Hc8XBOUI8vkVmIwWQZs33kxMF353Xj.png" },
-  { name: "Integration 2", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-407-eyikTTM6ccO0f4I7ZmNk5LpFI4EKOG.png" },
-  { name: "Integration 3", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-379-5hDaxwIw4LzjwXzWuorEXi7ESrGYl1.png" },
-  { name: "Integration 4", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-374-bp0RaoVnQI1JMqR9fjessWI8v33kLV.png" },
-  { name: "Integration 5", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-381-eKw7vkCp2Wq9hivZJaN1ERJdjCqR0d.png" },
+const equipment = [
+  {
+    id: "booth",
+    title: "Классическая фотобудка",
+    badge: "Хит",
+    badgeColor: "#156d95",
+    description: "Закрытая кабинка с профессиональной камерой, кольцевым светом и мгновенной печатью. Поместится любая компания — от пары до 8 человек.",
+    features: ["Мгновенная печать", "Забавный реквизит", "Фирменная рамка", "Цифровой архив"],
+    icon: "Camera",
+    color: "#156d95",
+    bg: "from-[#156d95]/10 to-[#156d95]/3",
+  },
+  {
+    id: "mirror",
+    title: "Селфи-зеркало",
+    badge: "Премиум",
+    badgeColor: "#8b5cf6",
+    description: "Огромное зеркало в полный рост с сенсорным экраном, анимациями и голосовыми подсказками. Идеально для свадеб и корпоративов.",
+    features: ["Рост 180 см", "Сенсорное управление", "Анимации и стикеры", "Печать за 8 сек"],
+    icon: "Sparkles",
+    color: "#8b5cf6",
+    bg: "from-[#8b5cf6]/10 to-[#8b5cf6]/3",
+  },
+  {
+    id: "ai",
+    title: "AI-фотостанция",
+    badge: "Новинка",
+    badgeColor: "#10b981",
+    description: "Нейросеть создаёт художественные портреты прямо на мероприятии. Аниме, масляная живопись, неон, 3D — за 30 секунд.",
+    features: ["20+ AI-стилей", "Без интернета", "Печать и цифра", "WOW-эффект гарантирован"],
+    icon: "Cpu",
+    color: "#10b981",
+    bg: "from-[#10b981]/10 to-[#10b981]/3",
+  },
 ];
 
-const defaultBottomRowApps: IntegrationApp[] = [
-  { name: "Integration 6", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-401-F6mjMLGEZt4HAohKA889Z8Gf5fMzIw.png" },
-  { name: "Integration 7", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-403-HnBAGFYWgxxMGrH2PI45UorQOsQHFo.png" },
-  { name: "Integration 1", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-389-Hc8XBOUI8vkVmIwWQZs33kxMF353Xj.png" },
-  { name: "Integration 2", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-407-eyikTTM6ccO0f4I7ZmNk5LpFI4EKOG.png" },
-  { name: "Integration 3", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-379-5hDaxwIw4LzjwXzWuorEXi7ESrGYl1.png" },
-  { name: "Integration 4", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-374-bp0RaoVnQI1JMqR9fjessWI8v33kLV.png" },
-  { name: "Integration 5", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-381-eKw7vkCp2Wq9hivZJaN1ERJdjCqR0d.png" },
-  { name: "Integration 6", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-401-F6mjMLGEZt4HAohKA889Z8Gf5fMzIw.png" },
-  { name: "Integration 7", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-403-HnBAGFYWgxxMGrH2PI45UorQOsQHFo.png" },
-  { name: "Integration 1", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-389-Hc8XBOUI8vkVmIwWQZs33kxMF353Xj.png" },
-  { name: "Integration 2", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-407-eyikTTM6ccO0f4I7ZmNk5LpFI4EKOG.png" },
-  { name: "Integration 3", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logoipsum-379-5hDaxwIw4LzjwXzWuorEXi7ESrGYl1.png" },
-];
-
-export const IntegrationCarousel = ({
-  buttonText = "Все интеграции",
-  buttonHref = "#",
-  title = "Интегрируется со всем вашим стеком инструментов.",
-  subtitle = "Подключите СинхроЛинк к Slack, Zoom, Notion, Google Meet и десяткам других сервисов для бесшовного анализа коммуникаций.",
-  topRowApps = defaultTopRowApps,
-  bottomRowApps = defaultBottomRowApps,
-}: IntegrationCarouselProps) => {
-  const topRowRef = useRef<HTMLDivElement>(null);
-  const bottomRowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let topAnimationId: number;
-    let bottomAnimationId: number;
-    let topPosition = 0;
-    let bottomPosition = 0;
-
-    const animateTopRow = () => {
-      if (topRowRef.current) {
-        topPosition -= 0.5;
-        if (Math.abs(topPosition) >= topRowRef.current.scrollWidth / 2) {
-          topPosition = 0;
-        }
-        topRowRef.current.style.transform = `translateX(${topPosition}px)`;
-      }
-      topAnimationId = requestAnimationFrame(animateTopRow);
-    };
-
-    const animateBottomRow = () => {
-      if (bottomRowRef.current) {
-        bottomPosition -= 0.65;
-        if (Math.abs(bottomPosition) >= bottomRowRef.current.scrollWidth / 2) {
-          bottomPosition = 0;
-        }
-        bottomRowRef.current.style.transform = `translateX(${bottomPosition}px)`;
-      }
-      bottomAnimationId = requestAnimationFrame(animateBottomRow);
-    };
-
-    topAnimationId = requestAnimationFrame(animateTopRow);
-    bottomAnimationId = requestAnimationFrame(animateBottomRow);
-
-    return () => {
-      cancelAnimationFrame(topAnimationId);
-      cancelAnimationFrame(bottomAnimationId);
-    };
-  }, []);
+export const IntegrationCarousel = () => {
+  const scrollToContact = () => {
+    const el = document.querySelector("#contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <div className="w-full py-24 bg-white">
-      <div className="max-w-[680px] mx-auto">
+    <section className="w-full py-24 px-4 md:px-8 bg-[#fafafa]" id="equipment">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="flex flex-col items-center mb-20"
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
         >
-          <div className="flex flex-col items-center gap-4">
-            <h2 className="text-[40px] leading-tight font-normal text-[#222222] text-center tracking-tight mb-0">
-              {title}
+          <p className="text-xs uppercase tracking-widest text-[#156d95] font-mono mb-4">Оборудование</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <h2 className="text-[40px] md:text-[48px] font-medium leading-tight text-[#111] max-w-[500px]">
+              Три формата. Один результат — восторг гостей.
             </h2>
-            <p className="text-lg leading-7 text-[#666666] text-center max-w-[600px] mt-2">
-              {subtitle}
-            </p>
+            <button
+              onClick={scrollToContact}
+              className="shrink-0 bg-[#156d95] text-white px-6 py-3.5 rounded-full text-sm font-medium hover:bg-[#1a85b5] hover:rounded-2xl transition-all duration-200"
+            >
+              Узнать стоимость
+            </button>
           </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-            className="flex gap-3 mt-6"
-          >
-            <a
-              href={buttonHref}
-              className="inline-block px-5 py-2.5 rounded-full bg-white text-[#222222] text-[15px] font-medium leading-6 text-center whitespace-nowrap transition-all duration-75 ease-out w-[182px] cursor-pointer hover:shadow-lg"
-              style={{
-                boxShadow: "0 -1px 0 0 rgb(181, 181, 181) inset, -1px 0 0 0 rgb(227, 227, 227) inset, 1px 0 0 0 rgb(227, 227, 227) inset, 0 1px 0 0 rgb(227, 227, 227) inset",
-                backgroundImage: "linear-gradient(rgba(255, 255, 255, 0.06) 80%, rgba(255, 255, 255, 0.12))",
-              }}
-            >
-              {buttonText}
-            </a>
-          </motion.div>
         </motion.div>
-      </div>
 
-      <div className="h-[268px] -mt-6 mb-0 pb-0 relative overflow-hidden">
-        <div
-          ref={topRowRef}
-          className="flex items-start gap-6 absolute top-6 whitespace-nowrap"
-          style={{ willChange: "transform" }}
-        >
-          {[...topRowApps, ...topRowApps].map((app, index) => (
-            <div
-              key={`top-${index}`}
-              className="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0"
-              style={{
-                backgroundImage: "linear-gradient(rgb(255, 255, 255), rgb(252, 252, 252))",
-                boxShadow: "rgba(0, 0, 0, 0.04) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 1px 0px, rgba(0, 0, 0, 0.04) 0px 3px 3px -1.4px, rgba(0, 0, 0, 0.04) 0px 6px 6px -3px, rgba(0, 0, 0, 0.04) 0px 12px 12px -6px, rgba(0, 0, 0, 0.04) 0px 12px 12px -12px",
-              }}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {equipment.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: index * 0.12 }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className={`bg-gradient-to-br ${item.bg} border border-black/6 rounded-[28px] p-8 flex flex-col gap-6 group cursor-default hover:shadow-xl hover:shadow-black/8 transition-all duration-300`}
             >
-              <img src={app.logo || "/placeholder.svg"} alt={app.name} className="w-9 h-9 block object-contain" />
-            </div>
-          ))}
-        </div>
+              <div className="flex items-start justify-between">
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                  style={{ backgroundColor: `${item.color}20` }}
+                >
+                  <Icon name={item.icon} size={24} style={{ color: item.color }} />
+                </div>
+                <span
+                  className="text-xs font-semibold px-3 py-1.5 rounded-full"
+                  style={{ backgroundColor: `${item.badgeColor}15`, color: item.badgeColor }}
+                >
+                  {item.badge}
+                </span>
+              </div>
 
-        <div
-          className="absolute top-0 right-0 bottom-0 w-60 h-[268px] z-10 pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(90deg, rgba(0, 0, 0, 0), rgb(255, 255, 255))" }}
-        />
+              <div>
+                <h3 className="text-xl font-semibold text-[#111] mb-3 leading-snug">{item.title}</h3>
+                <p className="text-[#555] text-sm leading-6">{item.description}</p>
+              </div>
 
-        <div
-          className="absolute top-0 left-0 bottom-0 w-60 h-[268px] z-10 pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(90deg, rgb(255, 255, 255), rgba(0, 0, 0, 0))" }}
-        />
-
-        <div
-          ref={bottomRowRef}
-          className="flex items-start gap-6 absolute top-[148px] whitespace-nowrap"
-          style={{ willChange: "transform" }}
-        >
-          {[...bottomRowApps, ...bottomRowApps].map((app, index) => (
-            <div
-              key={`bottom-${index}`}
-              className="flex items-center justify-center w-24 h-24 rounded-3xl flex-shrink-0"
-              style={{
-                backgroundImage: "linear-gradient(rgb(255, 255, 255), rgb(252, 252, 252))",
-                boxShadow: "rgba(0, 0, 0, 0.04) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 1px 0px, rgba(0, 0, 0, 0.04) 0px 3px 3px -1.4px, rgba(0, 0, 0, 0.04) 0px 6px 6px -3px, rgba(0, 0, 0, 0.04) 0px 12px 12px -6px, rgba(0, 0, 0, 0.04) 0px 12px 12px -12px",
-              }}
-            >
-              <img src={app.logo || "/placeholder.svg"} alt={app.name} className="w-9 h-9 block object-contain" />
-            </div>
+              <ul className="flex flex-col gap-2.5 mt-auto">
+                {item.features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-sm text-[#444]">
+                    <div
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
+                      style={{ backgroundColor: item.color }}
+                    />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

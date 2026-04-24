@@ -7,30 +7,34 @@ interface FAQItem {
   answer: string;
 }
 
-interface FAQSectionProps {
-  title?: string;
-  faqs?: FAQItem[];
-}
-
 const defaultFAQs: FAQItem[] = [
   {
-    question: "Что такое СинхроЛинк и как он работает?",
-    answer:
-      "СинхроЛинк — это AI-платформа, которая объединяет все ваши инструменты коммуникации — звонки, чаты и встречи — в единую систему. Она анализирует разговоры в реальном времени, предоставляя аналитику по тональности, настроению, синхронизации команды и паттернам взаимодействия. Просто интегрируйте СинхроЛинк с вашими инструментами (Slack, Zoom, Microsoft Teams) и начните получать инсайты мгновенно.",
+    question: "Сколько времени нужно на установку?",
+    answer: "Наш специалист приезжает за 1 час до начала мероприятия. Установка и настройка оборудования занимает 30–45 минут. К началу праздника всё будет готово к работе.",
   },
   {
-    question: "Как СинхроЛинк использует мои данные для создания кастомного AI-чата?",
-    answer:
-      "СинхроЛинк обрабатывает ваши коммуникационные данные с помощью передовых моделей обработки естественного языка и машинного обучения. Все данные шифруются end-to-end и обрабатываются в соответствии со стандартами корпоративной безопасности. Ваши данные никогда не передаются третьим сторонам, и вы полностью контролируете, что анализируется. AI обучается на паттернах коммуникации вашей команды для предоставления персонализированных инсайтов.",
+    question: "Входит ли оператор в стоимость?",
+    answer: "Да, во всех пакетах работает наш оператор. Он помогает гостям, следит за качеством снимков, устраняет технические вопросы и делает всё, чтобы ваши гости получали максимум удовольствия.",
   },
   {
-    question: "Как начать работу с СинхроЛинк и какие есть тарифы?",
-    answer:
-      "Начать просто: зарегистрируйтесь на бесплатный пробный период, подключите инструменты коммуникации и начните анализ в течение нескольких минут. Мы предлагаем гибкие тарифы: Старт (бесплатно для небольших команд), Про (2900₽/пользователь/месяц) и Корпоративный (индивидуальные условия с выделенной поддержкой). Все тарифы включают базовые функции анализа тональности и инсайты в реальном времени. Свяжитесь с нашим отделом продаж для корпоративных решений.",
+    question: "Сколько фото можно сделать?",
+    answer: "Количество снимков неограничено! В стоимость входит безлимитная печать на протяжении всей аренды. Каждый гость может сделать столько снимков, сколько захочет.",
+  },
+  {
+    question: "Работаете ли вы за городом или в другом городе?",
+    answer: "Мы работаем в Краснодаре и Краснодарском крае. Выезд за пределы города рассчитывается индивидуально в зависимости от расстояния. Уточните детали при оформлении заявки.",
+  },
+  {
+    question: "Можно ли сделать фирменные рамки с нашим логотипом?",
+    answer: "Конечно! Мы создаём индивидуальный дизайн рамки специально под ваше мероприятие — с именами, датой, логотипом компании или любой другой тематикой. Это входит в стоимость бесплатно.",
+  },
+  {
+    question: "Что нужно для размещения фотобудки?",
+    answer: "Нам нужна площадь 3×3 метра и розетка 220В рядом. Мы предусмотрим место заранее вместе с вами при согласовании деталей.",
   },
 ];
 
-export const FAQSection = ({ title = "Часто задаваемые вопросы", faqs = defaultFAQs }: FAQSectionProps) => {
+export const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
@@ -38,19 +42,38 @@ export const FAQSection = ({ title = "Часто задаваемые вопро
   };
 
   return (
-    <section className="w-full py-24 px-8 bg-white">
+    <section className="w-full py-24 px-4 md:px-8 bg-[#fafafa]" id="faq">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-12 gap-16">
           <div className="lg:col-span-4">
-            <h2 className="text-[40px] leading-tight font-normal text-[#202020] tracking-tight sticky top-24">
-              {title}
-            </h2>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="sticky top-24"
+            >
+              <p className="text-xs uppercase tracking-widest text-[#156d95] font-mono mb-4">FAQ</p>
+              <h2 className="text-[40px] leading-tight font-medium text-[#111] tracking-tight mb-6">
+                Часто задаваемые вопросы
+              </h2>
+              <p className="text-[#666] leading-6">
+                Не нашли ответ? Напишите нам — ответим в течение 15 минут.
+              </p>
+            </motion.div>
           </div>
 
           <div className="lg:col-span-8">
             <div className="space-y-0">
-              {faqs.map((faq, index) => (
-                <div key={index} className="border-b border-[#e5e5e5] last:border-b-0">
+              {defaultFAQs.map((faq, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                  className="border-b border-[#e5e5e5] last:border-b-0"
+                >
                   <button
                     onClick={() => toggleFAQ(index)}
                     className="w-full flex items-center justify-between py-6 text-left group hover:opacity-70 transition-opacity duration-150"
@@ -85,7 +108,7 @@ export const FAQSection = ({ title = "Часто задаваемые вопро
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>

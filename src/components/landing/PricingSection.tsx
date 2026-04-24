@@ -1,199 +1,189 @@
-import { useState } from "react";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import Icon from "@/components/ui/icon";
 
-type PlanLevel = "starter" | "pro" | "enterprise";
-
-interface PricingFeature {
-  name: string;
-  included: PlanLevel | "all";
-}
-
-interface PricingPlan {
-  name: string;
-  level: PlanLevel;
-  price: {
-    monthly: number;
-    yearly: number;
-  };
-  popular?: boolean;
-}
-
-const features: PricingFeature[] = [
-  { name: "Анализ разговоров в реальном времени", included: "starter" },
-  { name: "До 10 000 сообщений/месяц", included: "starter" },
-  { name: "Базовое определение тональности", included: "starter" },
-  { name: "Поддержка по email", included: "starter" },
-  { name: "Продвинутый эмоциональный интеллект", included: "pro" },
-  { name: "До 100 000 сообщений/месяц", included: "pro" },
-  { name: "Мультиязычная поддержка (50+ языков)", included: "pro" },
-  { name: "Приоритетная поддержка", included: "pro" },
-  { name: "Кастомное обучение AI модели", included: "enterprise" },
-  { name: "Безлимитные сообщения", included: "enterprise" },
-  { name: "Персональный менеджер", included: "enterprise" },
-  { name: "Поддержка 24/7 по телефону", included: "enterprise" },
-  { name: "Доступ к API", included: "all" },
-  { name: "Инструменты командной работы", included: "all" },
-];
-
-const plans: PricingPlan[] = [
+const promos = [
   {
-    name: "Старт",
-    price: { monthly: 2900, yearly: 29000 },
-    level: "starter",
+    icon: "Gift",
+    title: "3-й час в подарок",
+    subtitle: "При заказе от 2 часов",
+    description: "Закажите аренду на 2 часа и получите третий час совершенно бесплатно. Успеете порадовать всех гостей.",
+    color: "#156d95",
+    highlight: true,
   },
   {
-    name: "Про",
-    price: { monthly: 9900, yearly: 99000 },
-    level: "pro",
+    icon: "Star",
+    title: "Ковровая дорожка бесплатно",
+    subtitle: "К любому пакету",
+    description: "Красная ковровая дорожка с ограждением и стойками — создаёт атмосферу кинопремьеры на вашем мероприятии.",
+    color: "#f59e0b",
+    highlight: false,
+  },
+  {
+    icon: "Camera",
+    title: "Фирменные рамки бесплатно",
+    subtitle: "Дизайн под ваше событие",
+    description: "Создадим индивидуальный дизайн рамки с именами, датой и тематикой вашего праздника совершенно бесплатно.",
+    color: "#8b5cf6",
+    highlight: false,
+  },
+];
+
+const packages = [
+  {
+    name: "Старт",
+    duration: "2 часа",
+    price: "от 8 000 ₽",
+    features: ["Фотобудка или зеркало", "Печать без ограничений", "Реквизит в наборе", "Фирменная рамка"],
+    cta: "Выбрать",
+    popular: false,
+  },
+  {
+    name: "Праздник",
+    duration: "3 часа",
+    price: "от 11 000 ₽",
+    features: ["Любое оборудование", "Безлимитная печать", "Расширенный реквизит", "Ковровая дорожка", "Цифровой архив"],
+    cta: "Популярный выбор",
     popular: true,
   },
   {
-    name: "Бизнес",
-    price: { monthly: 29900, yearly: 299000 },
-    level: "enterprise",
+    name: "Вечеринка",
+    duration: "5 часов",
+    price: "от 17 000 ₽",
+    features: ["Всё оборудование сразу", "Оператор весь вечер", "AI-фото в подарок", "Ковровая дорожка", "Фотокнига на память"],
+    cta: "Выбрать",
+    popular: false,
   },
 ];
 
-function shouldShowCheck(included: PricingFeature["included"], level: PlanLevel): boolean {
-  if (included === "all") return true;
-  if (included === "enterprise" && level === "enterprise") return true;
-  if (included === "pro" && (level === "pro" || level === "enterprise")) return true;
-  if (included === "starter") return true;
-  return false;
-}
-
 export function PricingSection() {
-  const [isYearly, setIsYearly] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<PlanLevel>("pro");
+  const scrollToContact = () => {
+    const el = document.querySelector("#contact");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <section className="py-24 bg-background" id="pricing">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-[40px] font-normal leading-tight mb-4">Выберите тариф</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Начните работу с платформой коммуникационной аналитики СинхроЛинк. Все тарифы включают API доступ и инструменты командной работы.
-          </p>
-        </div>
+    <section className="py-24 bg-white px-4 md:px-8" id="promo">
+      <div className="mx-auto max-w-7xl">
 
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-secondary rounded-full p-1">
-            <button
-              type="button"
-              onClick={() => setIsYearly(false)}
-              className={cn(
-                "px-6 py-2 rounded-full text-lg transition-all",
-                !isYearly ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              Месячная
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsYearly(true)}
-              className={cn(
-                "px-6 py-2 rounded-full text-lg transition-all",
-                isYearly ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              Годовая
-              <span className="ml-2 text-sm text-[#156d95]">-17%</span>
-            </button>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <p className="text-xs uppercase tracking-widest text-[#156d95] font-mono mb-4">Акции</p>
+          <h2 className="text-[40px] md:text-[48px] font-medium leading-tight text-[#111] max-w-[560px]">
+            Специальные предложения для вашего праздника
+          </h2>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {plans.map((plan) => (
-            <button
-              key={plan.name}
-              type="button"
-              onClick={() => setSelectedPlan(plan.level)}
-              className={cn(
-                "relative p-8 rounded-2xl text-left transition-all border-2",
-                selectedPlan === plan.level
-                  ? "border-[#156d95] bg-[#156d95]/5"
-                  : "border-border hover:border-[#156d95]/50"
-              )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-20">
+          {promos.map((promo, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className={`rounded-[28px] p-8 flex flex-col gap-5 cursor-default transition-all duration-300 ${
+                promo.highlight
+                  ? "bg-[#0f0f0f] text-white"
+                  : "border border-[#e8e8e8] hover:shadow-lg hover:shadow-black/5"
+              }`}
             >
-              {plan.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#156d95] text-white px-4 py-1 rounded-full text-sm">
-                  Популярный
-                </span>
-              )}
-              <div className="mb-6">
-                <h3 className="text-2xl font-medium mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-medium">
-                    {(isYearly ? plan.price.yearly : plan.price.monthly).toLocaleString("ru-RU")} ₽
-                  </span>
-                  <span className="text-lg text-muted-foreground">/{isYearly ? "год" : "мес"}</span>
-                </div>
-              </div>
               <div
-                className={cn(
-                  "w-full py-3 px-6 rounded-full text-lg transition-all text-center",
-                  selectedPlan === plan.level ? "bg-[#156d95] text-white" : "bg-secondary text-foreground"
-                )}
+                className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                style={{ backgroundColor: `${promo.color}${promo.highlight ? "30" : "15"}` }}
               >
-                {selectedPlan === plan.level ? "Выбран" : "Выбрать"}
+                <Icon name={promo.icon} size={22} style={{ color: promo.color }} />
               </div>
-            </button>
+              <div>
+                <p className="text-xs font-medium mb-1" style={{ color: promo.color }}>{promo.subtitle}</p>
+                <h3 className={`text-xl font-semibold mb-3 leading-snug ${promo.highlight ? "text-white" : "text-[#111]"}`}>
+                  {promo.title}
+                </h3>
+                <p className={`text-sm leading-6 ${promo.highlight ? "text-white/60" : "text-[#666]"}`}>
+                  {promo.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="border border-border rounded-2xl overflow-hidden bg-card">
-          <div className="overflow-x-auto">
-            <div className="min-w-[768px]">
-              <div className="flex items-center p-6 bg-secondary border-b border-border">
-                <div className="flex-1">
-                  <h3 className="text-xl font-medium">Возможности</h3>
-                </div>
-                <div className="flex items-center gap-8">
-                  {plans.map((plan) => (
-                    <div key={plan.level} className="w-24 text-center text-lg font-medium">
-                      {plan.name}
-                    </div>
-                  ))}
-                </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <p className="text-xs uppercase tracking-widest text-[#156d95] font-mono mb-4">Пакеты</p>
+          <h2 className="text-[40px] font-medium leading-tight text-[#111]">Выберите пакет</h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {packages.map((pkg, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`rounded-[28px] p-8 flex flex-col gap-6 relative ${
+                pkg.popular
+                  ? "bg-[#0f0f0f] text-white ring-2 ring-[#156d95]"
+                  : "border border-[#e8e8e8]"
+              }`}
+            >
+              {pkg.popular && (
+                <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#156d95] text-white px-4 py-1.5 rounded-full text-xs font-semibold">
+                  Популярный
+                </span>
+              )}
+              <div>
+                <p className={`text-xs uppercase tracking-widest font-mono mb-2 ${pkg.popular ? "text-[#156d95]" : "text-[#999]"}`}>
+                  {pkg.duration}
+                </p>
+                <h3 className={`text-2xl font-semibold mb-1 ${pkg.popular ? "text-white" : "text-[#111]"}`}>{pkg.name}</h3>
+                <p className={`text-3xl font-bold mt-3 ${pkg.popular ? "text-white" : "text-[#111]"}`}>{pkg.price}</p>
               </div>
 
-              {features.map((feature, index) => (
-                <div
-                  key={feature.name}
-                  className={cn(
-                    "flex items-center p-6 transition-colors",
-                    index % 2 === 0 ? "bg-background" : "bg-secondary/30",
-                    feature.included === selectedPlan && "bg-[#156d95]/5"
-                  )}
-                >
-                  <div className="flex-1">
-                    <span className="text-lg">{feature.name}</span>
-                  </div>
-                  <div className="flex items-center gap-8">
-                    {plans.map((plan) => (
-                      <div key={plan.level} className="w-24 flex justify-center">
-                        {shouldShowCheck(feature.included, plan.level) ? (
-                          <div className="w-6 h-6 rounded-full bg-[#156d95] flex items-center justify-center">
-                            <CheckIcon className="w-4 h-4 text-white" />
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">-</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+              <ul className="flex flex-col gap-3 flex-1">
+                {pkg.features.map((f, i) => (
+                  <li key={i} className={`flex items-center gap-3 text-sm ${pkg.popular ? "text-white/70" : "text-[#555]"}`}>
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${pkg.popular ? "bg-[#156d95]/40" : "bg-[#156d95]/10"}`}>
+                      <Icon name="Check" size={12} className="text-[#156d95]" />
+                    </div>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <button
+                onClick={scrollToContact}
+                className={`w-full py-3.5 rounded-full text-sm font-semibold transition-all duration-200 hover:rounded-2xl ${
+                  pkg.popular
+                    ? "bg-[#156d95] text-white hover:bg-[#1a85b5]"
+                    : "border border-[#e8e8e8] text-[#111] hover:border-[#156d95] hover:text-[#156d95]"
+                }`}
+              >
+                Забронировать
+              </button>
+            </motion.div>
+          ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <button className="bg-[#156d95] text-white px-[18px] py-[15px] rounded-full text-lg hover:rounded-2xl transition-all">
-            Начать с тарифа {plans.find((p) => p.level === selectedPlan)?.name}
-          </button>
-        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="text-center text-sm text-[#999] mt-8"
+        >
+          Точная стоимость зависит от даты, адреса и дополнительных опций. Оставьте заявку — рассчитаем индивидуально.
+        </motion.p>
       </div>
     </section>
   );

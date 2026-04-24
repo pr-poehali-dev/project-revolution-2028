@@ -8,10 +8,10 @@ interface NavigationLink {
 }
 
 const navigationLinks: NavigationLink[] = [
-  { name: "Возможности", href: "#features" },
-  { name: "Тарифы", href: "#pricing" },
-  { name: "Решения", href: "#solutions" },
-  { name: "Ресурсы", href: "#resources" },
+  { name: "Оборудование", href: "#equipment" },
+  { name: "Как это работает", href: "#how" },
+  { name: "Акции", href: "#promo" },
+  { name: "FAQ", href: "#faq" },
 ];
 
 export const PortfolioNavbar = () => {
@@ -55,7 +55,7 @@ export const PortfolioNavbar = () => {
               onClick={() => handleLinkClick("#home")}
               className="text-2xl font-bold text-foreground hover:text-primary transition-colors duration-200"
             >
-              <span className="font-extrabold">СинхроЛинк</span>
+              <span className="font-extrabold">ФотоМомент</span>
             </button>
           </div>
 
@@ -79,7 +79,7 @@ export const PortfolioNavbar = () => {
               onClick={() => handleLinkClick("#contact")}
               className="bg-[#156d95] text-white px-[18px] rounded-full text-base font-semibold hover:bg-[#156d95]/90 transition-all duration-200 hover:rounded-2xl shadow-sm hover:shadow-md whitespace-nowrap leading-4 py-[15px]"
             >
-              <span className="font-medium">Попробовать бесплатно</span>
+              <span className="font-medium">Забронировать дату</span>
             </button>
           </div>
 
@@ -119,7 +119,7 @@ export const PortfolioNavbar = () => {
                   onClick={() => handleLinkClick("#contact")}
                   className="w-full bg-[#156d95] text-white px-[18px] py-[15px] rounded-full text-base font-semibold hover:bg-[#156d95]/90 transition-all duration-200"
                 >
-                  <span>Попробовать бесплатно</span>
+                  <span>Забронировать дату</span>
                 </button>
               </div>
             </div>

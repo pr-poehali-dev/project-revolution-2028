@@ -6,6 +6,7 @@ import {
   IntegrationCarousel,
   PricingSection,
   FAQSection,
+  ContactSection,
   Footer,
 } from "@/components/landing";
 
@@ -18,6 +19,7 @@ const Index = () => {
       <CaseStudiesCarousel />
       <IntegrationCarousel />
       <PricingSection />
+      <ContactSection />
       <FAQSection />
       <Footer />
     </>
